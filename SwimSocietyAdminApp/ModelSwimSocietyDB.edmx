@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SwimSocietyDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Agegroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Club">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Prize" Type="int" />
+        </EntityType>
+        <EntityType Name="Swimmer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Birthplace" Type="nvarchar" MaxLength="50" />
+          <Property Name="Birthdate" Type="date" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="50" />
+          <Property Name="AgeGroup_FK" Type="int" Nullable="false" />
+          <Property Name="Club_FK" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Swimmer_Agegroup">
+          <End Role="Agegroup" Type="Self.Agegroup" Multiplicity="1" />
+          <End Role="Swimmer" Type="Self.Swimmer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agegroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Swimmer">
+              <PropertyRef Name="AgeGroup_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Swimmer_Club">
+          <End Role="Club" Type="Self.Club" Multiplicity="1" />
+          <End Role="Swimmer" Type="Self.Swimmer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Swimmer">
+              <PropertyRef Name="AgeGroup_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SwimSocietyDatabaseModelStoreContainer">
+          <EntitySet Name="Agegroup" EntityType="Self.Agegroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Club" EntityType="Self.Club" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Swimmer" EntityType="Self.Swimmer" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Swimmer_Agegroup" Association="Self.FK_Swimmer_Agegroup">
+            <End Role="Agegroup" EntitySet="Agegroup" />
+            <End Role="Swimmer" EntitySet="Swimmer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Swimmer_Club" Association="Self.FK_Swimmer_Club">
+            <End Role="Club" EntitySet="Club" />
+            <End Role="Swimmer" EntitySet="Swimmer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SwimSocietyDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Agegroup">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Swimmers" Relationship="Self.FK_Swimmer_Agegroup" FromRole="Agegroup" ToRole="Swimmer" />
+        </EntityType>
+        <EntityType Name="Club">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Prize" Type="Int32" />
+          <NavigationProperty Name="Swimmers" Relationship="Self.FK_Swimmer_Club" FromRole="Club" ToRole="Swimmer" />
+        </EntityType>
+        <EntityType Name="Swimmer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Birthplace" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Birthdate" Type="DateTime" Precision="0" />
+          <Property Name="Sex" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AgeGroup_FK" Type="Int32" Nullable="false" />
+          <Property Name="Club_FK" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Agegroup" Relationship="Self.FK_Swimmer_Agegroup" FromRole="Swimmer" ToRole="Agegroup" />
+          <NavigationProperty Name="Club" Relationship="Self.FK_Swimmer_Club" FromRole="Swimmer" ToRole="Club" />
+        </EntityType>
+        <Association Name="FK_Swimmer_Agegroup">
+          <End Role="Agegroup" Type="Self.Agegroup" Multiplicity="1" />
+          <End Role="Swimmer" Type="Self.Swimmer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agegroup">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Swimmer">
+              <PropertyRef Name="AgeGroup_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Swimmer_Club">
+          <End Role="Club" Type="Self.Club" Multiplicity="1" />
+          <End Role="Swimmer" Type="Self.Swimmer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Swimmer">
+              <PropertyRef Name="AgeGroup_FK" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SwimSocietyDatabaseEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Agegroups" EntityType="Self.Agegroup" />
+          <EntitySet Name="Clubs" EntityType="Self.Club" />
+          <EntitySet Name="Swimmers" EntityType="Self.Swimmer" />
+          <AssociationSet Name="FK_Swimmer_Agegroup" Association="Self.FK_Swimmer_Agegroup">
+            <End Role="Agegroup" EntitySet="Agegroups" />
+            <End Role="Swimmer" EntitySet="Swimmers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Swimmer_Club" Association="Self.FK_Swimmer_Club">
+            <End Role="Club" EntitySet="Clubs" />
+            <End Role="Swimmer" EntitySet="Swimmers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SwimSocietyDatabaseModelStoreContainer" CdmEntityContainer="SwimSocietyDatabaseEntities1">
+          <EntitySetMapping Name="Agegroups">
+            <EntityTypeMapping TypeName="SwimSocietyDatabaseModel.Agegroup">
+              <MappingFragment StoreEntitySet="Agegroup">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clubs">
+            <EntityTypeMapping TypeName="SwimSocietyDatabaseModel.Club">
+              <MappingFragment StoreEntitySet="Club">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Prize" ColumnName="Prize" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Swimmers">
+            <EntityTypeMapping TypeName="SwimSocietyDatabaseModel.Swimmer">
+              <MappingFragment StoreEntitySet="Swimmer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Birthplace" ColumnName="Birthplace" />
+                <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="AgeGroup_FK" ColumnName="AgeGroup_FK" />
+                <ScalarProperty Name="Club_FK" ColumnName="Club_FK" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
