@@ -1,0 +1,1 @@
+Ez nem a beadandó munkám fájlja. A beadandom a SwimSocietyAdminApp.
